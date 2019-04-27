@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lwkangpy.yys_all.dao.IHellspawnDao">
+	
+	<insert id="insertHellspawn">
+		insert into t_hellspawn(hellspawnName,type) values(#{hellspawnName},#{type})
+		<selectKey resultType="int" keyProperty="id" order="AFTER">
+			select @@identity
+		</selectKey>
+	</insert>
+	<delete id="deleteHellspawnById">
+		delete from t_hellspawn where id=#{xx}
+	</delete>
+	<update id="updateHellspawn">
+		update t_hellspawn set hellspawnName=#{hellspawnName},type=#{type} where id=#{id}
+	</update>
+	
+	<select id="selectAllHellspawn" resultType="Hellspawn">
+		select * from t_hellspawn 
+	</select>
+	<select id="selectHellspawnByType" resultType="Hellspawn">
+		select * from t_hellspawn where type=#{type}
+	</select>
+	<select id="selectHellspawnById" resultType="Hellspawn">
+		select * from t_hellspawn where id=#{id}
+	</select>
+	<select id="selectHellspawnByName" resultType="Hellspawn">
+		select * from t_hellspawn where hellspawnName=#{hellspawnName}
+	</select>
+</mapper>

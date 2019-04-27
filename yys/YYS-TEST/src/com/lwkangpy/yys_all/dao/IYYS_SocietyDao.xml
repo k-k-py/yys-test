@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lwkangpy.yys_all.dao.IYYS_SocietyDao">
+
+	<insert id="insertYYS_Society">
+		insert into t_society(societyName) values(#{societyName})
+		<selectKey resultType="int" keyProperty="id" order="AFTER">
+			select @@identity
+		</selectKey>
+	</insert>
+	<delete id="deleteYYS_SocietyById">
+		delete from t_society where id=#{xx}
+	</delete>
+	<update id="updateYYS_Society">
+		update t_society set societyName=#{societyName} where id=#{id}
+	</update>
+	
+	<select id="selectAllYYS_Society" resultType="YYS_Society">
+		select * from t_society 
+	</select>
+	<select id="selectYYS_SocietyById" resultType="YYS_Society">
+		select * from t_society where id=#{id}
+	</select>
+	<select id="selectYYS_SocietyByName" resultType="YYS_Society">
+		select * from t_society where societyName=#{societyName}
+	</select>
+</mapper>

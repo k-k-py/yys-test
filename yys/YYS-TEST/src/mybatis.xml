@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- 测试用 配置文件-->
+	
+	
+	<typeAliases>
+		<!-- <typeAlias type="com.company.beans.Student" alias="Student"/> -->
+		<!-- 将指定包中所有类的简单类名当做其别名 -->
+		<package name="com.lwkangpy.yys_all.beans"/>
+	</typeAliases>
+
+	<!-- 配置运行环境 -->
+	<environments default="testLEM">
+		<environment id="testLEM">
+			<transactionManager type="JDBC"/>
+			<dataSource type="POOLED">
+				<property name="driver" value="com.mysql.jdbc.Driver"/>
+				<property name="url" value="jdbc:mysql://127.0.0.1:3306/yys_all"/>
+				<property name="username" value="root"/>
+				<property name="password" value="123456"/>
+			</dataSource>
+		</environment>
+	</environments>
+	
+	<!-- 注册映射文件 -->
+	<mappers>
+		<package name="com.lwkangpy.yys_all.dao"/>
+	</mappers>
+
+</configuration>

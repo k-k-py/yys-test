@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<beans 	xmlns="http://www.springframework.org/schema/beans" 
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xmlns:context="http://www.springframework.org/schema/context"
+		xmlns:aop="http://www.springframework.org/schema/aop" 
+		xmlns:tx="http://www.springframework.org/schema/tx" 
+		xmlns:mvc="http://www.springframework.org/schema/mvc"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans 
+							http://www.springframework.org/schema/beans/spring-beans.xsd 
+							http://www.springframework.org/schema/context
+							http://www.springframework.org/schema/context/spring-context.xsd 
+							http://www.springframework.org/schema/aop
+							http://www.springframework.org/schema/aop/spring-aop.xsd
+							http://www.springframework.org/schema/tx 
+							http://www.springframework.org/schema/tx/spring-tx.xsd
+							http://www.springframework.org/schema/mvc
+							http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+	<!-- 注册处理器组件扫描器 -->
+	<context:component-scan base-package="com.lwkangpy.yys_all.handles"/>
+	<!-- mvc 注解驱动 -->
+	<mvc:annotation-driven>
+		<!--消息转化器-->
+        <mvc:message-converters>
+            <!--配置以下bean，解决json数据传输中中文乱码的问题-->
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>application/json;charset=UTF-8</value>
+                        <value>text/html;charset=UTF-8</value>
+                    </list>
+                </property>
+            </bean>
+            <!--json数据转换-->
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+            </bean>
+        </mvc:message-converters>
+	</mvc:annotation-driven>
+	<!-- 注册拦截器 -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/main/**"/>
+			<bean class="com.lwkangpy.yys_all.intercepters.PermissionInterceptor"/>
+		</mvc:interceptor>
+	</mvc:interceptors>
+	
+	<!-- 注册静态资源 -->
+	<mvc:resources location="/js/" mapping="/js/**"></mvc:resources>
+	
+ </beans>

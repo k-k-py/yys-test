@@ -1,0 +1,100 @@
+项目名称:
+	yys 阴阳寮/个人 ssr/sp碎片整合系统(采用ssm框架)
+
+需求分析:
+	这套系统主要是为ssr/sp碎片的整合 交换
+	 
+	对于碎片 Fragments : 应该有属性 为 id , nameid(碎片式神hellspawn名字) , piece{件} , yys_Id{所属阴阳师账号id} ,type(类型 int 1 = ssr,2 = sp);
+	
+			式神表 :hellspawn ,id, name 
+			
+	对于用户 user : 有 id , userName(用户名) , passWord (登录密码) ; 
+	
+	对于 master: 有id , masterName ,yys_Id(阴阳师账号id),user_id(所属用户),yys_societyId(阴阳寮id) ;
+	
+	对于阴阳寮 yys_society : 有id , 有societyName;
+	
+第一阶段总结: 
+	总计需要 4 张表 4 个POJO类;
+	
+	数据库采用mysql 进行建表
+	
+	测试 查询 一个用户所有碎片
+	1.查询 用户所拥有的账号信息 形成a表
+	select 
+		u.id id, u.username username, m.id mid, m.masterName masterName,m.yys_Id yys_Id
+	from t_user u
+	
+	left JOIN t_master m
+	
+	on u.id = m.user_id;
+	2 将碎片表与名称类型表联系 形成b表
+	select
+		f.piece piece,f.yys_id yys_id,h.hellspawnName hellspawnName,h.type type
+	from t_fragment f
+	
+	LEFT join t_hellspawn h
+	
+	on f.hellspawnid = h.id
+
+	ORDER BY h.type ,f.piece;
+	3 将这a表 与 b表联系 yys_id = yys_Id
+	select
+		a.id userid, a.username username,a.masterName masterName,b.hellspawnName hellspawnName, b.type type, b.piece piece
+	from (select 
+		u.id id, u.username username, m.id mid, m.masterName masterName,m.yys_Id yys_Id
+	from t_user u
+	
+	left JOIN t_master m
+	
+	on u.id = m.user_id) a
+	
+	LEFT join (select
+		f.piece piece,f.yys_id yys_id,h.hellspawnName hellspawnName,h.type type
+	from t_fragment f
+	
+	LEFT join t_hellspawn h
+	
+	on f.hellspawnid = h.id) b
+	
+	on a.yys_Id = b.yys_id
+	
+	ORDER BY b.type ,b.piece
+	;
+	 <测试成功>
+
+第二阶段 
+	搭建框架(ssm)
+
+	
+	写pojo类
+	
+第三阶段
+	写dao层
+	测试
+	全部完成 2019年3月15日 10:38:52
+进入第四阶段 :与前端接轨
+	模块设计
+		1 登录/注册模块
+			权限拦截器
+			
+		2 主业务模块
+			管理员页面< (管理员继承自user) 多一个属性isAdministrator = true;>暂时来说为了节省时间 
+				只有一个管理员 name = root 为一个user
+				增/删/改/查 式神 
+				增/删/改/查 阴阳寮
+				
+			用户主要业务有 (用户继承自user)
+				1.1 增/删/改/查 master
+				2.2 进入某个master之以后
+				   	增删改查 式神碎片
+				   	
+	一 .完成登录注册功能
+			1 简单完成 界面简单	 
+				
+	
+	
+	
+			
+			 
+	

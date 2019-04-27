@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<title>注册页面</title>
+		<!--图标-->
+		<link rel="shortcut icon" th:href="@{/resources/favicon.ico}"/>
+		<link rel="bookmark" th:href="@{/resources/favicon.ico}"/>
+		<!-- Bootstrap core CSS -->
+		<link href="asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.0.0/css/bootstrap.css}" rel="stylesheet">
+		<!-- Custom styles for this template -->
+		<link href="asserts/css/signin.css" th:href="@{/asserts/css/signin.css}" rel="stylesheet">
+	</head>
+	<body class="text-center">
+
+	<form class="form-signin" th:action="@{/user/register.do}" method="post">
+
+		<h1 class="h3 mb-3 font-weight-normal" >欢迎注册!</h1>
+		<img class="mb-4" th:src="@{/asserts/img/loginimg.png}"  alt="" width="330" height="90">
+		<p style="color: red" th:text="${msgErro}" th:if="${not #strings.isEmpty(msgErro)}"></p>
+		<div class="input-group mb-3">
+			<div class="input-group-prepend">
+				<span class="input-group-text" id="username">用户名</span>
+			</div>
+			<input type="text" class="form-control" th:name="userName" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+		</div>
+		<div class="input-group mb-3">
+
+			<div class="input-group-prepend">
+				<span class="input-group-text" id="password">密&nbsp;&nbsp;&nbsp;&nbsp;码</span>
+			</div>
+			<input type="text" class="form-control" th:name="passWord" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+		</div>
+
+		<button class="btn btn-info btn-lg btn-block" type="submit" th:text="#{login.rgbtn}"></button>
+		<p class="mt-5 mb-3 text-muted">© 2019-2020</p>
+	</form>
+	</body>
+
+
+</html>

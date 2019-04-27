@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<beans 	xmlns="http://www.springframework.org/schema/beans" 
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xmlns:context="http://www.springframework.org/schema/context"
+		xmlns:aop="http://www.springframework.org/schema/aop" 
+		xmlns:tx="http://www.springframework.org/schema/tx" 
+		xsi:schemaLocation="http://www.springframework.org/schema/beans 
+							http://www.springframework.org/schema/beans/spring-beans.xsd 
+							http://www.springframework.org/schema/context
+							http://www.springframework.org/schema/context/spring-context.xsd 
+							http://www.springframework.org/schema/aop
+							http://www.springframework.org/schema/aop/spring-aop.xsd
+							http://www.springframework.org/schema/tx 
+							http://www.springframework.org/schema/tx/spring-tx.xsd">
+							
+	<!-- 注册切面 事务管理器 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    	<property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!-- 注册事务通知 -->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+    	<tx:attributes>
+    	<!-- 这里指定的是为每一个连接点指定所要应用的事务属性 -->
+    		<tx:method name="add*" isolation="DEFAULT" propagation="REQUIRED"/>
+    	</tx:attributes>
+    </tx:advice>
+	<!-- aop配置 -->
+	<aop:config >
+	<!-- 这里指定的是切入点 -->
+		<aop:pointcut expression="execution(* *..services.*.*(..))" id="pointcut"/>
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="pointcut"/>	
+		
+	</aop:config>
+	<!-- 注册自动代理 -->
+	<aop:aspectj-autoproxy/>						
+</beans>

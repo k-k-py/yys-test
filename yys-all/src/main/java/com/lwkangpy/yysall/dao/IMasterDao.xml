@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lwkangpy.yysall.dao.IMasterDao">
+	<insert id="insertMaster">
+		insert into t_master(masterName,yys_Id,user_id,yys_societyId) values(#{masterName},#{yys_Id},#{user.id},#{yYS_Society.id})
+		<selectKey resultType="int" keyProperty="id" order="AFTER">
+			select @@identity
+		</selectKey>
+	</insert>
+	<delete id="deleteMasterById">
+		delete from t_master where id=#{xx}
+	</delete>
+	<update id="updateMaster">
+		update t_master set masterName=#{masterName},yys_Id=#{yys_Id},user_id=#{user.id},yys_societyId=#{yYS_Society.id} where id=#{id}
+	</update>
+	
+	<select id="selectFragmentByHellspawn" resultType="Hellspawn">
+		select * from t_hellspawn where id=#{hellspawnId}
+	</select>
+	<select id="selectFragmentByMaster" resultType="Master">
+		select * from t_master where yys_Id=#{yys_Id}
+	</select>
+	<resultMap type="Fragment" id="FragmentMapper">
+		<id column="id" property="id"/>
+		<result column="piece" property="piece"/>
+		<association property="hellspawn" 
+					javaType="Hellspawn"
+					select="selectFragmentByHellspawn"
+					column="hellspawnId"/>
+		<association property="master"
+					javaType="Master"
+					select="selectFragmentByMaster"
+					column="yys_Id"/>
+	
+	</resultMap>
+	
+	<select id="selectUserByMaster" resultType="User">
+		select * from t_user where id=#{user_id}
+	</select>
+	<select id="selectUserByYYS_Society" resultType="YYS_Society">
+		select * from t_society where id=#{yys_societyId}
+	</select>
+	<select id="selectUserByFragment" resultMap="FragmentMapper">
+		select * from t_fragment where yys_Id=#{yys_Id}
+	</select>
+	<resultMap type="Master" id="MasterMapper">
+		<id column="id" property="id"/>
+		<result column="masterName" property="masterName"/>
+		<result column="yys_Id" property="yys_Id"/>
+		<association property="user"
+					javaType="User"
+					select="selectUserByMaster"
+					column="user_id"/>
+		<association property="yYS_Society"
+					javaType="YYS_Society"
+					select="selectUserByYYS_Society"
+					column="yys_societyId"/>
+		<collection property="fragments"
+					ofType="Fragment"
+					select="selectUserByFragment"
+					column="yys_Id"/>
+	</resultMap>
+	
+	<select id="selectMasterById" resultMap="MasterMapper">
+		select * from t_master where id=#{id}
+	</select>
+	<select id="selectMasterByName" resultMap="MasterMapper">
+		select * from t_master where masterName=#{masterName}
+	</select>
+	<select id="selectMasterByYys_Id" resultMap="MasterMapper">
+		select * from t_master where yys_Id=#{yys_Id}
+	</select>
+	<select id="selectMasterByUser_Id" resultMap="MasterMapper">
+		select * from t_master where user_id=#{user_Id}
+	</select>
+	<select id="selectMasterByYys_SocietyId" resultMap="MasterMapper">
+		select * from t_master where yys_SocietyId=#{yys_SocietyId}
+	</select>
+	
+
+</mapper>
