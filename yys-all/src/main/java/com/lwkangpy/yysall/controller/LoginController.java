@@ -27,28 +27,28 @@ public class LoginController {
 
     @PostMapping(value = "/user/login.do")
     public String doLogin(User user,HttpSession session,Map<String,Object> map){
-
-        User user2 = service.getUser(user);
-        if(user2!=null && user.getPassWord().equals(user2.getPassWord())){
-
-            session.setAttribute("loginUser", user2);
-            if("root".equals(user2.getUserName()) ){
-                return "redirect:/root/main.html";
-            }
-            return "redirect:/main.html";
-        }else if("lwkangpy".equals(user.getUserName())&&"123456".equals(user.getPassWord())){
-            //测试用户 lwkangpy 123456
+        //之前应该判断是否为无数据库用户
+        if("lwkangpy".equals(user.getUserName())&&"123456".equals(user.getPassWord())){
+             //测试用户 lwkangpy 123456
             session.setAttribute("loginUser", user);
             return "redirect:/main.html";
         }else{
-            //登陆失败
-
-            map.put("msg","用户名密码错误!");
-            return  "login";
-
+            User user2 = service.getUser(user);
+            if(user2!=null && user.getPassWord().equals(user2.getPassWord())){
+                session.setAttribute("loginUser", user2);
+                //区分root用户与正常用户
+                if("root".equals(user2.getUserName()) ){
+                    return "redirect:/root/main.html";
+                 }
+                return "redirect:/main.html";
+            }else{
+                //登陆失败
+                map.put("msg","用户名密码错误!");
+                return  "login";
+            }
+        
         }
-
-
+        
     }
 
     @PostMapping(value="/user/register.do")
